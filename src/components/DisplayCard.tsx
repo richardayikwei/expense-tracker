@@ -8,7 +8,7 @@ import { faCediSign } from "@fortawesome/free-solid-svg-icons";
 const DisplayCard = () => {
   return (
     <div>
-      <div className="border h-[40rem] border-black w-1/2 mt-40 rounded-2xl bg-slate-300">
+      <div className="border h-[40rem] w-[40rem] border-black mt-40 rounded-2xl bg-slate-300">
         <div className="justify-end flex mr-10">
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
@@ -142,7 +142,7 @@ const DisplayCard = () => {
           </div>
         </div>
 
-        <div className="md:grid md:grid-cols-9 mx-6 sticky bottom-20 left-32">
+        <div className="md:grid md:grid-cols-9 mx-6 bottom-20 left-32">
           <div></div>
           <div>Total</div>
           <div></div>

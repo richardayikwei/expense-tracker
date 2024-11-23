@@ -1,5 +1,6 @@
 import { useState } from "react";
-import DisplayCard from "./components/DisplayCard";
+import DisplayCard from "../components/DisplayCard";
+import InputCard from "../components/InputCard";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -10,8 +11,9 @@ function App() {
         <h1 className="text-3xl p-6">Expense Tracker</h1>
       </header>
       <main>
-        <div>
+        <div className="flex max-w-[72rem] justify-between mx-auto">
           <DisplayCard />
+          <InputCard />
         </div>
       </main>
     </>
