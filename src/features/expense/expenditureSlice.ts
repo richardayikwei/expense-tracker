@@ -1,31 +1,40 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
+import { State } from "../../type/typeInterface";
 
-interface ExpenseState {
-    expense: string;
-    amount: number;
-    date: string;
-}
+type RootExpenseState = State[];
 
-type RootExpenseState = ExpenseState[];
 
 const initialState: RootExpenseState = [
-    { expense: 'car', amount: 8, date: '22/10/2024' },
-    { expense: 'house', amount: 80, date: '22/10/2024' }
+    { item: 'car', amount: 8, date: '22/10/2024', liked: true, hidden: false },
+    { item: 'house', amount: 80, date: '22/10/2024', liked: true, hidden: false },
+    { item: 'house', amount: 80, date: '22/10/2024', liked: true, hidden: false },
 ]
 
 export const expenditureSlice = createSlice({
     name: 'expenditure',
     initialState,
     reducers: {
-        AddExpenditure: (state, action: PayloadAction<ExpenseState>) => {
+        AddExpenditure: (state, action: PayloadAction<State>) => {
             state.push(action.payload)
         },
         deleteExpenditure: (state, action: PayloadAction<number>) => {
-            state.filter((entry, index) => index !== action.payload)
-        }
+            return state.filter((entry, index) => index !== action.payload)
+        },
+        toggleLike: (state, action: PayloadAction<number>) => {
+            state[action.payload].liked === true ?
+                state[action.payload].liked = false :
+                state[action.payload].liked = true;
+        },
+        toggleHidden: (state, action: PayloadAction<number>) => {
+            state[action.payload].hidden === true ?
+                state[action.payload].hidden = false :
+                state[action.payload].hidden = true;
+        },
     }
 });
 
-export const { AddExpenditure, deleteExpenditure } = expenditureSlice.actions;
+export const { AddExpenditure, deleteExpenditure, toggleLike, toggleHidden } = expenditureSlice.actions;
+export const selectExpenditure = (state: RootState) => state.expenditure;
 export default expenditureSlice.reducer;
