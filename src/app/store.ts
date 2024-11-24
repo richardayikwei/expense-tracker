@@ -1,13 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import ExpensesReducer from '../features/expense/expensesSlice'
-import ExpensesAmountReducer from '../features/expense/expensesAmountSlice'
-import ExpensesDateReducer from '../features/expense/expensesDateSlice'
+import expenditureReducer from '../features/expense/expenditureSlice'
 
 export const store = configureStore({
     reducer: {
-        expenses: ExpensesReducer,
-        amount: ExpensesAmountReducer,
-        date: ExpensesDateReducer,
+        expenditure: expenditureReducer
     },
 })
 
