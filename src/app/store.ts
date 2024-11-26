@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import expenditureReducer from '../features/expense/expenditureSlice'
+import revenueReducer from '../features/revenue/revenueSlice'
 
 export const store = configureStore({
     reducer: {
-        expenditure: expenditureReducer
+        expenditure: expenditureReducer,
+        revenue: revenueReducer
     },
 })
 

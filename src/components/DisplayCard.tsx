@@ -7,27 +7,58 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faCediSign } from "@fortawesome/free-solid-svg-icons";
 import { faHeartCrack } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
-import { State } from "../type/typeInterface";
+import { useState } from "react";
+import {
+  deleteRevenue,
+  toggleHiddenRevenue,
+  toggleLikeRevenue,
+} from "../features/revenue/revenueSlice";
+import {
+  deleteExpenditure,
+  toggleHiddenExpenditure,
+  toggleLikeExpenditure,
+} from "../features/expense/expenditureSlice";
+import { useSelector } from "react-redux";
+import { selectExpenditure } from "../features/expense/expenditureSlice";
+import { selectRevenue } from "../features/revenue/revenueSlice";
 
-type TrackedProps = {
-  tracked: State[];
-  actions: ActionCreatorWithPayload<number, "expenditure/deleteExpenditure">;
-  toggleLike: ActionCreatorWithPayload<number, "expenditure/toggleLike">;
-  toggleHidden: ActionCreatorWithPayload<number, "expenditure/toggleHidden">;
-};
-
-const DisplayCard = ({
-  tracked,
-  actions,
-  toggleLike,
-  toggleHidden,
-}: TrackedProps) => {
+const DisplayCard = () => {
   const dispatch = useDispatch();
-  const total = tracked.map((item) => item.amount).reduce((a, b) => a + b, 0);
+  const expenditureState = useSelector(selectExpenditure);
+  const revenueState = useSelector(selectRevenue);
+  const [display, setDisplay] = useState("expense");
+
+  let selected;
+
+  display === "expense"
+    ? (selected = expenditureState)
+    : (selected = revenueState);
+
+  const total = selected.map((item) => item.amount).reduce((a, b) => a + b, 0);
+
+  function handleChange(view: string) {
+    view === "expense" ? setDisplay("expense") : setDisplay("revenue");
+  }
+
   return (
     <div>
-      <div className="border h-[40rem] w-[40rem] border-black mt-40 rounded-2xl bg-slate-300">
+      <div className="mt-32 min-w-[30rem] flex justify-end">
+        <button
+          onClick={() => handleChange("expense")}
+          type="button"
+          className="border active:opacity-0 w-28 border-black p-1 rounded-l-2xl"
+        >
+          Expense
+        </button>
+        <button
+          onClick={() => handleChange("revenue")}
+          type="button"
+          className="border mr-10 w-28 active:opacity-0 border-black p-1 rounded-r-2xl"
+        >
+          Revenue
+        </button>
+      </div>
+      <div className="border h-[40rem] min-w-[30rem] border-black mt-5 rounded-2xl bg-slate-300">
         <div className="justify-end flex mr-10">
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
@@ -47,8 +78,8 @@ const DisplayCard = ({
           <FontAwesomeIcon icon={faCediSign} />
         </div>
         <div className="overflow-y-auto h-[28rem]">
-          {tracked.map((item, idx) => {
-            let opacity, hideTitle, hideEyed, title;
+          {selected.map((item, idx) => {
+            let hideTitle, hideEyed, title;
             item.hidden === true
               ? ((hideTitle = "show"),
                 (hideEyed = faEyeSlash),
@@ -59,24 +90,38 @@ const DisplayCard = ({
             item.liked === true
               ? ((likeHeart = faHeart), (likeTitle = "Liked"))
               : ((likeHeart = faHeartCrack), (likeTitle = "UnLiked"));
+
             return (
               <div
                 className="md:grid md:grid-cols-9 mx-6"
                 key={item.item + idx}
               >
                 <button
+                  className="active:opacity-0"
                   type="button"
                   title={hideTitle}
-                  onClick={() => dispatch(toggleHidden(idx))}
+                  onClick={() =>
+                    dispatch(
+                      display === "expense"
+                        ? toggleHiddenExpenditure(idx)
+                        : toggleHiddenRevenue(idx)
+                    )
+                  }
                 >
                   <FontAwesomeIcon icon={hideEyed} />
                 </button>
                 <div className="col-span-2">{title}</div>
-
                 <button
+                  className="active:opacity-0"
                   type="button"
                   title={likeTitle}
-                  onClick={() => dispatch(toggleLike(idx))}
+                  onClick={() =>
+                    dispatch(
+                      display === "expense"
+                        ? toggleLikeExpenditure(idx)
+                        : toggleLikeRevenue(idx)
+                    )
+                  }
                 >
                   <FontAwesomeIcon icon={likeHeart} />
                 </button>
@@ -85,10 +130,16 @@ const DisplayCard = ({
                 <div className="col-span-2">{item.date}</div>
 
                 <button
-                  className="w-5 h-5"
+                  className="w-6 h-6"
                   title="delete"
                   type="button"
-                  onClick={() => dispatch(actions(idx))}
+                  onClick={() =>
+                    dispatch(
+                      display === "expense"
+                        ? deleteExpenditure(idx)
+                        : deleteRevenue(idx)
+                    )
+                  }
                 >
                   <FontAwesomeIcon icon={faTrashCan} />
                 </button>

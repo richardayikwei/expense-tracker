@@ -16,18 +16,18 @@ export const expenditureSlice = createSlice({
     name: 'expenditure',
     initialState,
     reducers: {
-        AddExpenditure: (state, action: PayloadAction<State>) => {
+        addExpenditure: (state, action: PayloadAction<State>) => {
             state.push(action.payload)
         },
         deleteExpenditure: (state, action: PayloadAction<number>) => {
             return state.filter((entry, index) => index !== action.payload)
         },
-        toggleLike: (state, action: PayloadAction<number>) => {
+        toggleLikeExpenditure: (state, action: PayloadAction<number>) => {
             state[action.payload].liked === true ?
                 state[action.payload].liked = false :
                 state[action.payload].liked = true;
         },
-        toggleHidden: (state, action: PayloadAction<number>) => {
+        toggleHiddenExpenditure: (state, action: PayloadAction<number>) => {
             state[action.payload].hidden === true ?
                 state[action.payload].hidden = false :
                 state[action.payload].hidden = true;
@@ -35,6 +35,6 @@ export const expenditureSlice = createSlice({
     }
 });
 
-export const { AddExpenditure, deleteExpenditure, toggleLike, toggleHidden } = expenditureSlice.actions;
+export const { addExpenditure, deleteExpenditure, toggleLikeExpenditure, toggleHiddenExpenditure } = expenditureSlice.actions;
 export const selectExpenditure = (state: RootState) => state.expenditure;
 export default expenditureSlice.reducer;

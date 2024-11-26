@@ -3,11 +3,11 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const InputCard = () => {
   return (
-    <div className="w-[30rem] bg-orage-400 mt-32">
+    <div className="min-w-[30rem] mt-36">
       <div className="text-xl flex justify-center">
         <h2>Add Expense</h2>
       </div>
-      <div className="flex justify-between mt-7">
+      <div className="flex justify-between mt-9">
         <input
           placeholder="expense"
           type="text"
@@ -34,7 +34,7 @@ const InputCard = () => {
       <div className="text-xl flex justify-center mt-12">
         <h2>Add Revenue</h2>
       </div>
-      <div className="flex justify-between mt-7">
+      <div className="flex justify-between mt-9">
         <input
           placeholder="revenue"
           type="text"
