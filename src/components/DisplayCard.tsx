@@ -27,17 +27,31 @@ const DisplayCard = () => {
   const expenditureState = useSelector(selectExpenditure);
   const revenueState = useSelector(selectRevenue);
   const [display, setDisplay] = useState("expense");
+  const [search, setSearch] = useState("");
 
   let selected;
 
   display === "expense"
-    ? (selected = expenditureState)
-    : (selected = revenueState);
+    ? (selected = expenditureState.filter((item) => {
+        if (search.trim() !== "") {
+          return item.item.includes(search);
+        } else {
+          return item;
+        }
+      }))
+    : (selected = revenueState.filter((item) => {
+        if (search.trim() !== "") {
+          return item.item.includes(search);
+        } else {
+          return item;
+        }
+      }));
 
   const total = selected.map((item) => item.amount).reduce((a, b) => a + b, 0);
 
   function handleChange(view: string) {
     view === "expense" ? setDisplay("expense") : setDisplay("revenue");
+    setSearch('')
   }
 
   return (
@@ -60,14 +74,12 @@ const DisplayCard = () => {
       </div>
       <div className="border h-[40rem] min-w-[30rem] border-black mt-5 rounded-2xl bg-slate-300">
         <div className="justify-end flex mr-10">
-          <FontAwesomeIcon
-            icon={faMagnifyingGlass}
-            className="relative left-8 top-10 text-slate-300"
-          />
           <input
             type="text"
-            placeholder="search item"
-            className="border border-black mt-6 rounded-2xl h-10 placeholder:text-center"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="🔍search item"
+            className="border border-black mt-6 rounded-2xl h-10 placeholder:text-center text-center"
           />
         </div>
         <div className="md:grid md:grid-cols-9 mx-6 p-6">
@@ -110,7 +122,7 @@ const DisplayCard = () => {
                 >
                   <FontAwesomeIcon icon={hideEyed} />
                 </button>
-                <div className="col-span-2">{title}</div>
+                <div className="col-span-2 text-wrap">{title}</div>
                 <button
                   className="active:opacity-0"
                   type="button"
